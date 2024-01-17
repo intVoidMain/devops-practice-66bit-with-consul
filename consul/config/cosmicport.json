@@ -1,13 +1,48 @@
 {
-  "service": {
-    "name": "backend",
+  "services": [
+  {
+    "name": "backend_1",
     "port": 80,
-    "address": "cosmicport",
+    "address": "cosmicport_1",
     "checks": [
       {
-        "args": ["curl", "cosmicport"],
+        "args": ["curl", "cosmicport_1"],
+        "interval": "3s"
+      }
+    ]
+  },
+  {
+    "name": "backend_2",
+    "port": 80,
+    "address": "cosmicport_2",
+    "checks": [
+      {
+        "args": ["curl", "cosmicport_2"],
+        "interval": "3s"
+      }
+    ]
+  },
+  {
+    "name": "backend_3",
+    "port": 80,
+    "address": "cosmicport_3",
+    "checks": [
+      {
+        "args": ["curl", "cosmicport_3"],
+        "interval": "3s"
+      }
+    ]
+  },
+  {
+    "name": "backend_4",
+    "port": 80,
+    "address": "cosmicport_4",
+    "checks": [
+      {
+        "args": ["curl", "cosmicport_4"],
         "interval": "3s"
       }
     ]
   }
+  ]
 }

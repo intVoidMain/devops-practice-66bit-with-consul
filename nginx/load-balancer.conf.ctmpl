@@ -1,0 +1,22 @@
+upstream backend {
+ {{- range service "backend_1" }} 
+  server {{ .Address }}:{{ .Port }}; 
+ {{- end }}
+ {{- range service "backend_2" }} 
+  server {{ .Address }}:{{ .Port }}; 
+ {{- end }}
+ {{- range service "backend_3" }} 
+  server {{ .Address }}:{{ .Port }}; 
+ {{- end }}
+ {{- range service "backend_4" }} 
+  server {{ .Address }}:{{ .Port }}; 
+ {{- end }}
+}
+
+server {
+   listen 80;
+
+   location / {
+      proxy_pass http://backend;
+   }
+}

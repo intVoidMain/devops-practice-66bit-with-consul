@@ -1,6 +1,21 @@
 version: "3"
 
 services:
+  dispatching_service:
+    container_name: dispatching_service
+    build:
+      dockerfile: Dockerfile 
+    volumes:
+      - ./nginx/load-balancer.conf.ctmpl:/etc/nginx/conf.d/load-balancer.conf.ctmpl
+      - ./nginx/consul-template.hcl:/etc/nginx/conf.d/consul-template.hcl
+    ports:
+      - 8888:80 
+    networks:
+      - consul-network
+    depends_on:
+      - consul-server
+      - consul-agent 
+
   consul-server:
     image: hashicorp/consul
     container_name: consul-server
@@ -10,6 +25,11 @@ services:
       - "8600:8600"
     networks:
       - consul-network
+    depends_on:
+      - cosmicport_1
+      - cosmicport_2
+      - cosmicport_3
+      - cosmicport_4
 
   consul-agent:
     image: hashicorp/consul
@@ -19,12 +39,38 @@ services:
       - ./consul/config/:/consul/config/
     networks:
       - consul-network
+    depends_on:
+      - consul-server
 
-  cosmicport:
+  cosmicport_1:
     image: hub.66bit.ru/shared/images/devops-practice:latest
-    container_name: cosmicport
+    container_name: cosmicport_1
     environment:
-      - ASP_INSTANCE_NAME=${INSTANCE_NAME}
+      - ASP_INSTANCE_NAME=${INSTANCE_NAME_1}
+    networks:
+      - consul-network
+
+  cosmicport_2:
+    image: hub.66bit.ru/shared/images/devops-practice:latest
+    container_name: cosmicport_2
+    environment:
+      - ASP_INSTANCE_NAME=${INSTANCE_NAME_2}
+    networks:
+      - consul-network
+
+  cosmicport_3:
+    image: hub.66bit.ru/shared/images/devops-practice:latest
+    container_name: cosmicport_3
+    environment:
+      - ASP_INSTANCE_NAME=${INSTANCE_NAME_3}
+    networks:
+      - consul-network
+
+  cosmicport_4:
+    image: hub.66bit.ru/shared/images/devops-practice:latest
+    container_name: cosmicport_4
+    environment:
+      - ASP_INSTANCE_NAME=${INSTANCE_NAME_4}
     networks:
       - consul-network
 
