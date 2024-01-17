@@ -1,0 +1,13 @@
+{
+  "service": {
+    "name": "backend",
+    "port": 80,
+    "address": "cosmicport",
+    "checks": [
+      {
+        "args": ["curl", "cosmicport"],
+        "interval": "3s"
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  consul-server:
+    image: hashicorp/consul
+    container_name: consul-server
+    command: agent -server -ui -node=server -bootstrap-expect=1 -client=0.0.0.0
+    ports:
+      - "8500:8500"
+      - "8600:8600"
+    networks:
+      - consul-network
+
+  consul-agent:
+    image: hashicorp/consul
+    container_name: consul-agent
+    command: agent -node=agent -retry-join=consul-server
+    volumes:
+      - ./consul/config/:/consul/config/
+    networks:
+      - consul-network
+
+  cosmicport:
+    image: hub.66bit.ru/shared/images/devops-practice:latest
+    container_name: cosmicport
+    environment:
+      - ASP_INSTANCE_NAME=${INSTANCE_NAME}
+    networks:
+      - consul-network
+
+networks:
+  consul-network:
+    driver: bridge
